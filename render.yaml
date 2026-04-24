@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: smart-voting-system
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn wsgi:app
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+      - key: PRESENTATION_MODE
+        value: "true"
+      - key: ALLOW_SERVER_CAMERA
+        value: "false"
+      - key: MONGODB_SERVER_SELECTION_TIMEOUT_MS
+        value: "5000"
+      - key: UPLOAD_FOLDER
+        value: /tmp/smart-voting-system/uploads
+      - key: DATASET_FOLDER
+        value: /tmp/smart-voting-system/dataset
+      - key: OTP_FILE
+        value: /tmp/smart-voting-system/otp.txt
+      - key: FLASK_SECRET_KEY
+        generateValue: true
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: MONGODB_URI
+        sync: false
+      - key: MONGODB_DB_NAME
+        value: smart_voting_system
+      - key: VOTE_ENCRYPTION_KEY
+        sync: false
