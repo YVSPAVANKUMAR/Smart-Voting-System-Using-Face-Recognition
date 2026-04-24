@@ -117,6 +117,9 @@ def ensure_parent_directory(path: str) -> None:
 
 
 app = Flask(__name__)
+# Support common Gunicorn import styles used in Render dashboards and blueprints.
+main = app
+application = app
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "voting_secret_dev_only")
 IS_RENDER = env_flag("RENDER", False)
 UPLOAD_FOLDER = env_path("UPLOAD_FOLDER", 'static/uploads/', "/tmp/smart-voting-system/uploads")
