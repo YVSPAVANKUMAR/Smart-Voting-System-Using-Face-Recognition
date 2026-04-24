@@ -25,7 +25,7 @@ def env_int(name: str, default: int) -> int:
         return default
 
 
-MONGODB_URI = (os.getenv("MONGODB_URI") or "mongodb://localhost:27017/").strip()
+MONGODB_URI = (os.getenv("MONGODB_URI")).strip()
 MONGODB_DB_NAME = (os.getenv("MONGODB_DB_NAME") or "smart_voting_system").strip()
 MONGODB_SERVER_SELECTION_TIMEOUT_MS = env_int("MONGODB_SERVER_SELECTION_TIMEOUT_MS", 5000)
 MONGODB_CONNECT_TIMEOUT_MS = env_int("MONGODB_CONNECT_TIMEOUT_MS", MONGODB_SERVER_SELECTION_TIMEOUT_MS)
