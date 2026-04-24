@@ -15,6 +15,15 @@ from election_config import DEFAULT_CANDIDATES
 load_dotenv()
 
 
+def env_str(name: str, default: Optional[str] = None) -> Optional[str]:
+    value = os.getenv(name)
+    if value is None:
+        return default
+
+    value = value.strip()
+    return value or default
+
+
 def env_int(name: str, default: int) -> int:
     value = os.getenv(name)
     if value is None:
@@ -25,8 +34,8 @@ def env_int(name: str, default: int) -> int:
         return default
 
 
-MONGODB_URI = (os.getenv("MONGODB_URI")).strip()
-MONGODB_DB_NAME = (os.getenv("MONGODB_DB_NAME") or "smart_voting_system").strip()
+MONGODB_URI = env_str("MONGODB_URI")
+MONGODB_DB_NAME = env_str("MONGODB_DB_NAME", "smart_voting_system") or "smart_voting_system"
 MONGODB_SERVER_SELECTION_TIMEOUT_MS = env_int("MONGODB_SERVER_SELECTION_TIMEOUT_MS", 5000)
 MONGODB_CONNECT_TIMEOUT_MS = env_int("MONGODB_CONNECT_TIMEOUT_MS", MONGODB_SERVER_SELECTION_TIMEOUT_MS)
 
@@ -40,6 +49,10 @@ def get_database():
     global _client, _database
 
     if _database is None:
+        if not MONGODB_URI:
+            raise RuntimeError(
+                "MONGODB_URI is not configured. Set it in your environment or .env file before starting the app."
+            )
         _client = MongoClient(
             MONGODB_URI,
             serverSelectionTimeoutMS=MONGODB_SERVER_SELECTION_TIMEOUT_MS,
